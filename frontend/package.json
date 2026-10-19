@@ -1,0 +1,14 @@
+{
+  "name": "url-shortener-frontend",
+  "version": "1.0.0",
+  "description": "Frontend UI for the Minify URL Shortener",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.11"
+  },
+  "private": true
+}

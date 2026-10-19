@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minify — Soothing & Intelligent URL Shortener</title>
+  <!-- Meta description for SEO -->
+  <meta name="description" content="Minify is a calming, modern URL shortener that helps you generate short links, track real-time click analytics, and create custom QR codes in a beautiful responsive interface.">
+  <!-- Google Fonts - Inter and Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/qrious.min.js"></script>
+</head>
+<body>
+  <!-- Header with Brand and Theme Toggler -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 16C6 10.4772 10.4772 6 16 6C21.5228 6 26 10.4772 26 16C26 21.5228 21.5228 26 16 26" stroke="url(#logo-grad)" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M12 16H20" stroke="url(#logo-grad)" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="16" cy="16" r="3" fill="url(#logo-grad)"/>
+          <defs>
+            <linearGradient id="logo-grad" x1="6" y1="6" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#14b8a6"/>
+              <stop offset="1" stop-color="#06b6d4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-name">Minify</span>
+      </div>
+      
+      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle visual theme">
+        <!-- Moon Icon (Dark Mode active) -->
+        <svg class="icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <!-- Sun Icon (Light Mode active) -->
+        <svg class="icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-container">
+    
+    <!-- Hero Intro Section -->
+    <section class="hero-section">
+      <h1 class="hero-title">Soften Your Links</h1>
+      <p class="hero-subtitle">Transform long, noisy URLs into calming, elegant links. View micro-analytics instantly without invading user privacy.</p>
+    </section>
+
+    <!-- Shortener Form Card -->
+    <section class="form-section">
+      <div class="glass-card main-card">
+        <form id="shortener-form" class="shortener-form">
+          <div class="input-group">
+            <div class="input-icon-wrapper">
+              <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+            </div>
+            <input type="text" id="url-input" class="url-input" placeholder="Paste your long URL here..." required autocomplete="off" aria-label="URL to shorten">
+          </div>
+          <button type="submit" id="submit-btn" class="submit-btn">
+            <span>Shorten Link</span>
+            <div class="spinner" id="btn-spinner"></div>
+          </button>
+        </form>
+        <div id="form-error-msg" class="error-message"></div>
+      </div>
+    </section>
+
+    <!-- Shortening Result Container (Hidden by default) -->
+    <section id="result-section" class="result-section hidden">
+      <div class="glass-card result-card">
+        <div class="success-header">
+          <div class="success-pulse">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h3>Your link is ready!</h3>
+        </div>
+
+        <div class="shortened-result-container">
+          <div class="result-link-wrapper">
+            <span id="shortened-url-text" class="shortened-url-text">http://localhost:3000/xyz123</span>
+          </div>
+          <div class="result-actions">
+            <button id="copy-btn" class="action-btn copy-btn" title="Copy to clipboard">
+              <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span id="copy-btn-text">Copy</span>
+            </button>
+            <button id="qr-toggle-btn" class="action-btn qr-toggle-btn" title="Show QR Code">
+              <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <span>QR Code</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hidden QR Code Section -->
+        <div id="qr-container" class="qr-container hidden">
+          <div class="qr-box">
+            <canvas id="qr-canvas"></canvas>
+            <p class="qr-info">Scan to open the shortened URL</p>
+          </div>
+        </div>
+
+        <div class="original-link-preview">
+          <span class="preview-label">Original:</span>
+          <a href="#" id="original-url-preview" target="_blank" rel="noopener noreferrer" class="preview-link">https://example.com/very-long-url-path-that-is-too-long-to-be-visually-pleasing</a>
+        </div>
+
+        <div class="analytics-actions">
+          <button id="view-stats-btn" class="btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>View Click Analytics</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analytics Dashboard Section (Hidden by default) -->
+    <section id="analytics-section" class="analytics-section hidden">
+      <div class="section-title-wrapper">
+        <h2 class="section-title">Link Analytics</h2>
+        <p class="section-subtitle">Real-time engagement breakdown for <span id="analytics-short-id" class="accent-text">xyz123</span></p>
+      </div>
+
+      <div class="analytics-grid">
+        <!-- Total Clicks Card -->
+        <div class="glass-card analytics-card stat-card-highlight">
+          <div class="stat-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h6v6"></path>
+              <path d="M9 21H3v-6"></path>
+              <path d="M21 3l-7 7M3 21l7-7"></path>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-label">Total Visits</p>
+            <div class="clicks-display-wrapper">
+              <h4 id="total-clicks-count" class="stat-value">0</h4>
+              <span class="live-pulse"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Device Breakdown Card -->
+        <div class="glass-card analytics-card">
+          <h4 class="card-title">Device Breakdown</h4>
+          <div id="device-distribution-list" class="distribution-list">
+            <!-- Dynamic elements: Desktop, Mobile, Tablet -->
+            <div class="dist-row">
+              <div class="dist-header">
+                <span>Desktop</span>
+                <span class="dist-percentage" id="device-pct-desktop">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="device-bar-desktop" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="dist-row">
+              <div class="dist-header">
+                <span>Mobile</span>
+                <span class="dist-percentage" id="device-pct-mobile">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="device-bar-mobile" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="dist-row">
+              <div class="dist-header">
+                <span>Tablet</span>
+                <span class="dist-percentage" id="device-pct-tablet">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="device-bar-tablet" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Browser Breakdown Card -->
+        <div class="glass-card analytics-card">
+          <h4 class="card-title">Top Browsers</h4>
+          <div id="browser-distribution-list" class="distribution-list">
+            <!-- Dynamic content -->
+            <p class="empty-state">No browser data recorded yet.</p>
+          </div>
+        </div>
+
+        <!-- OS Breakdown Card -->
+        <div class="glass-card analytics-card">
+          <h4 class="card-title">Top Operating Systems</h4>
+          <div id="os-distribution-list" class="distribution-list">
+            <!-- Dynamic content -->
+            <p class="empty-state">No OS data recorded yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Visits Activity Log -->
+      <div class="glass-card log-card">
+        <h4 class="card-title">Recent Activity Logs</h4>
+        <div class="table-responsive">
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Device</th>
+                <th>Browser</th>
+                <th>OS</th>
+                <th>IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="activity-log-body">
+              <tr>
+                <td colspan="5" class="empty-table-state">No click logs recorded yet. Redirect a click to populate history!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <p>&copy; 2026 Minify. Built with care, color theory, and responsiveness.</p>
+      <div class="footer-links">
+        <span class="footer-tag">Soothing UI v1.0</span>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- JavaScript Controller -->
+  <script src="js/main.js"></script>
+</body>
+</html>
